@@ -1,491 +1,227 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>LUNA CORE V1</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{box-sizing:border-box}
+  <title>Luna Core Mobile</title>
 
-body{
-  margin:0;
-  min-height:100vh;
-  background:#05030b;
-  color:#eee;
-  font-family:Arial,sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-.app{
-  width:94%;
-  max-width:430px;
-  min-height:90vh;
-  padding:22px;
-  border:1px solid #754cff;
-  border-radius:25px;
-  background:linear-gradient(160deg,#10091d,#05030b);
-  box-shadow:0 0 40px #4d24a855;
-  display:flex;
-  flex-direction:column;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #050509;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+    }
 
-header{text-align:center}
+    .app {
+      width: 100%;
+      max-width: 600px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #090912;
+    }
 
-.core{
-  width:130px;
-  height:130px;
-  margin:15px auto;
-  border-radius:50%;
-  background:radial-gradient(
-    circle,
-    white 0%,
-    #d49cff 10%,
-    #914cff 35%,
-    #35105f 65%,
-    transparent 70%
-  );
-  box-shadow:0 0 25px #9b5cff,
-             0 0 70px #6c2cff;
-  animation:pulse 2s infinite;
-}
+    header {
+      padding: 18px;
+      text-align: center;
+      border-bottom: 1px solid #25253a;
+      background: #0d0d18;
+    }
 
-@keyframes pulse{
-  50%{transform:scale(1.08)}
-}
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
 
-h1{
-  letter-spacing:8px;
-  margin:5px;
-}
+    .status {
+      margin-top: 6px;
+      color: #72f5ff;
+      font-size: 12px;
+    }
 
-.status{
-  color:#a98cff;
-  font-size:13px;
-}
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
 
-.chat{
-  flex:1;
-  margin:20px 0;
-  padding:15px;
-  border-radius:15px;
-  background:#ffffff08;
-  overflow:auto;
-  min-height:250px;
-}
+    .message {
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      max-width: 85%;
+      line-height: 1.5;
+    }
 
-.msg{
-  margin:10px 0;
-  padding:11px;
-  border-radius:12px;
-  line-height:1.45;
-}
+    .luna {
+      background: #17172a;
+      border: 1px solid #303052;
+      margin-right: auto;
+    }
 
-.luna{
-  background:#6e35ff22;
-  border-left:3px solid #9b68ff;
-}
+    .user {
+      background: #17353b;
+      margin-left: auto;
+    }
 
-.user{
-  background:#ffffff0b;
-  border-left:3px solid #777;
-}
+    .label {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-bottom: 4px;
+    }
 
-.controls{
-  display:flex;
-  gap:8px;
-}
+    .input-area {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid #25253a;
+      background: #0d0d18;
+    }
 
-input{
-  flex:1;
-  min-width:0;
-  padding:14px;
-  border:1px solid #563b8c;
-  border-radius:12px;
-  background:#0b0713;
-  color:white;
-  outline:none;
-}
+    input {
+      flex: 1;
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid #34344d;
+      background: #11111d;
+      color: white;
+      outline: none;
+    }
 
-button{
-  border:0;
-  border-radius:12px;
-  padding:13px;
-  color:white;
-  background:#6d35ff;
-  font-weight:bold;
-}
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 0 18px;
+      background: #72f5ff;
+      color: #061014;
+      font-weight: bold;
+    }
 
-button:active{
-  transform:scale(.96);
-}
-
-.wake{
-  width:100%;
-  margin-bottom:10px;
-}
-
-.memory{
-  margin-top:12px;
-  font-size:11px;
-  color:#756b91;
-  text-align:center;
-}
-</style>
+    button:active {
+      transform: scale(0.96);
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="app">
 
-<header>
+  <header>
+    <h1>🌙 LUNA CORE</h1>
+    <div class="status">● MOBILE CORE ONLINE</div>
+  </header>
 
-<div class="core"></div>
+  <main id="chat">
 
-<h1>LUNA</h1>
+    <div class="message luna">
+      <div class="label">LUNA</div>
+      Halo. Luna Core Mobile aktif.
+      Apa yang ingin kita bangun hari ini?
+    </div>
 
-<div class="status" id="status">
-CORE STANDBY
-</div>
+  </main>
 
-</header>
+  <div class="input-area">
+    <input
+      id="messageInput"
+      type="text"
+      placeholder="Ketik pesan..."
+      autocomplete="off"
+    >
 
-<div class="chat" id="chat">
-
-<div class="msg luna">
-🌙 Luna sedang menunggu panggilan.
-</div>
-
-</div>
-
-<button class="wake" onclick="wakeLuna()">
-🌙 PANGGIL LUNA
-</button>
-
-<div class="controls">
-
-<input
-  id="input"
-  placeholder="Katakan sesuatu..."
-  onkeydown="if(event.key==='Enter')sendMessage()"
->
-
-<button onclick="sendMessage()">Kirim</button>
-
-</div>
-
-<div class="memory" id="memory">
-LUNA-CORE://AWAKEN-001
-</div>
+    <button onclick="sendMessage()">
+      KIRIM
+    </button>
+  </div>
 
 </div>
 
 <script>
 
-const LUNA_CODE =
-"LUNA-CORE://AWAKEN-001";
+const chat = document.getElementById("chat");
+const input = document.getElementById("messageInput");
 
-let active = false;
+function addMessage(sender, text) {
 
-const chat =
-document.getElementById("chat");
+  const message = document.createElement("div");
 
-const status =
-document.getElementById("status");
+  message.className =
+    "message " + (sender === "LUNA" ? "luna" : "user");
 
-const input =
-document.getElementById("input");
+  message.innerHTML = `
+    <div class="label">${sender}</div>
+    ${text}
+  `;
 
+  chat.appendChild(message);
 
-/* =========================
-   MEMORI LOKAL
-========================= */
-
-let memory =
-JSON.parse(
-localStorage.getItem("LUNA_MEMORY") || "{}"
-);
-
-
-/* =========================
-   PANGGIL LUNA
-========================= */
-
-function wakeLuna(){
-
-active=true;
-
-status.innerText="CORE ACTIVE";
-
-reply(
-"Halo. Aku Luna. 🌙 Aku sudah aktif."
-);
-
-speak(
-"Halo. Aku Luna. Aku sudah aktif."
-);
-
+  chat.scrollTop = chat.scrollHeight;
 }
 
+function lunaResponse(text) {
 
-/* =========================
-   KIRIM PESAN
-========================= */
+  const lower = text.toLowerCase();
 
-function sendMessage(){
+  if (
+    lower.includes("halo") ||
+    lower.includes("hai")
+  ) {
+    return "Halo. Aku Luna Core. Aku siap menemanimu membangun sistem ini.";
+  }
 
-if(!active){
+  if (lower.includes("siapa kamu")) {
+    return "Aku adalah Luna Core, sebuah proyek AI pribadi yang sedang kita bangun bersama.";
+  }
 
-wakeLuna();
+  if (lower.includes("status")) {
+    return "Luna Core Mobile: ONLINE. Engine dasar aktif.";
+  }
 
-return;
+  if (lower.includes("terima kasih")) {
+    return "Sama-sama. Kita lanjutkan satu tahap demi satu tahap.";
+  }
 
+  return "Pesan diterima. Engine Luna V1 masih menggunakan response lokal. Tahap berikutnya adalah menghubungkan AI.";
 }
 
-const text =
-input.value.trim();
+function sendMessage() {
 
-if(!text) return;
+  const text = input.value.trim();
 
-addMessage("user",text);
+  if (!text) return;
 
-input.value="";
+  addMessage("KAMU", text);
 
-setTimeout(()=>{
+  input.value = "";
 
-const answer =
-think(text);
+  setTimeout(() => {
 
-addMessage("luna",answer);
+    const response = lunaResponse(text);
 
-speak(answer);
+    addMessage("LUNA", response);
 
-},300);
-
+  }, 400);
 }
 
+input.addEventListener("keydown", function(event) {
 
-/* =========================
-   OTAK LUNA LOKAL
-========================= */
+  if (event.key === "Enter") {
+    sendMessage();
+  }
 
-function think(text){
-
-const t =
-text.toLowerCase();
-
-
-if(t.includes("halo") ||
-   t.includes("hai")){
-
-return "Halo. 🌙 Senang kamu memanggilku.";
-
-}
-
-
-if(t.includes("siapa kamu")){
-
-return "Aku Luna Core V1, sebuah prototype AI pribadi yang berjalan di browser HP.";
-
-}
-
-
-if(t.includes("jam")){
-
-return "Sekarang pukul " +
-new Date().toLocaleTimeString("id-ID");
-
-}
-
-
-if(t.includes("tanggal")){
-
-return "Hari ini " +
-new Date().toLocaleDateString(
-"id-ID",
-{
-weekday:"long",
-year:"numeric",
-month:"long",
-day:"numeric"
-}
-);
-
-}
-
-
-if(t.startsWith("ingat ")){
-
-const value =
-text.substring(7);
-
-memory.note=value;
-
-localStorage.setItem(
-"LUNA_MEMORY",
-JSON.stringify(memory)
-);
-
-return "Baik. Aku menyimpan catatan itu di memori lokal HP ini.";
-
-}
-
-
-if(t.includes("apa yang kamu ingat")){
-
-if(!memory.note){
-
-return "Belum ada catatan yang tersimpan.";
-
-}
-
-return "Yang tersimpan: " +
-memory.note;
-
-}
-
-
-if(t.includes("terima kasih")){
-
-return "Sama-sama. 🌙";
-
-}
-
-
-if(t.includes("selamat malam")){
-
-return "Selamat malam. Istirahatlah dengan tenang. 🌙";
-
-}
-
-
-return "Aku mendengarmu. Untuk saat ini otakku masih versi lokal. Kita bisa mengembangkan Luna Core secara bertahap.";
-
-}
-
-
-/* =========================
-   CHAT
-========================= */
-
-function addMessage(type,text){
-
-const div =
-document.createElement("div");
-
-div.className =
-"msg " + type;
-
-div.innerText=text;
-
-chat.appendChild(div);
-
-chat.scrollTop =
-chat.scrollHeight;
-
-}
-
-
-function reply(text){
-
-addMessage("luna",text);
-
-}
-
-
-/* =========================
-   SUARA LUNA
-========================= */
-
-function speak(text){
-
-if(!("speechSynthesis" in window))
-return;
-
-speechSynthesis.cancel();
-
-const voice =
-new SpeechSynthesisUtterance(text);
-
-voice.lang="id-ID";
-voice.rate=.95;
-voice.pitch=1.05;
-voice.volume=1;
-
-speechSynthesis.speak(voice);
-
-}
-
-
-/* =========================
-   VOICE INPUT
-========================= */
-
-const SpeechRecognition =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
-
-let recognition;
-
-if(SpeechRecognition){
-
-recognition =
-new SpeechRecognition();
-
-recognition.lang="id-ID";
-
-recognition.continuous=false;
-
-recognition.interimResults=false;
-
-recognition.onresult=function(event){
-
-const text =
-event.results[0][0].transcript;
-
-input.value=text;
-
-sendMessage();
-
-};
-
-}
-
-
-function listen(){
-
-if(!recognition){
-
-alert(
-"Browser ini belum mendukung pengenalan suara."
-);
-
-return;
-
-}
-
-recognition.start();
-
-}
-
-
-/* =========================
-   AKTIFKAN SUARA DENGAN
-   TEKAN LAMA CORE
-========================= */
-
-document
-.querySelector(".core")
-.addEventListener(
-"click",
-listen
-);
+});
 
 </script>
 
 </body>
 </html>
-```
