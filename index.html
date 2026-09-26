@@ -1,225 +1,920 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUNA CORE</title>
 
-  <title>Luna Core Mobile</title>
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body{
+  background:#05070b;
+  color:#eaffff;
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #050509;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-    }
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(0,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,255,.035) 1px,transparent 1px);
+  background-size:25px 25px;
+}
 
-    .app {
-      width: 100%;
-      max-width: 600px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: #090912;
-    }
+header{
+  padding:18px;
+  text-align:center;
+  border-bottom:1px solid #12343a;
+  background:#070b12;
+}
 
-    header {
-      padding: 18px;
-      text-align: center;
-      border-bottom: 1px solid #25253a;
-      background: #0d0d18;
-    }
+.logo{
+  font-size:28px;
+  font-weight:bold;
+  letter-spacing:5px;
+  color:#00ffff;
+  text-shadow:0 0 15px #00ffff;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+.status{
+  margin-top:7px;
+  font-size:12px;
+  color:#63ffb4;
+  letter-spacing:2px;
+}
 
-    .status {
-      margin-top: 6px;
-      color: #72f5ff;
-      font-size: 12px;
-    }
+.core{
+  width:120px;
+  height:120px;
+  margin:25px auto;
+  border-radius:50%;
+  border:2px solid #00ffff;
+  box-shadow:
+    0 0 20px #00ffff,
+    inset 0 0 25px #00ffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:pulse 2s infinite;
+}
 
-    #chat {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-    }
+.core::after{
+  content:"L";
+  font-size:55px;
+  color:#fff;
+  text-shadow:0 0 20px #00ffff;
+}
 
-    .message {
-      margin-bottom: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      max-width: 85%;
-      line-height: 1.5;
-    }
+@keyframes pulse{
+  0%,100%{
+    transform:scale(1);
+    box-shadow:0 0 20px #00ffff,inset 0 0 25px #00ffff;
+  }
+  50%{
+    transform:scale(1.08);
+    box-shadow:0 0 45px #00ffff,inset 0 0 40px #00ffff;
+  }
+}
 
-    .luna {
-      background: #17172a;
-      border: 1px solid #303052;
-      margin-right: auto;
-    }
+.panel{
+  margin:12px;
+  padding:15px;
+  border:1px solid #124c55;
+  border-radius:12px;
+  background:rgba(7,15,22,.92);
+}
 
-    .user {
-      background: #17353b;
-      margin-left: auto;
-    }
+.panel-title{
+  color:#00ffff;
+  font-size:13px;
+  letter-spacing:2px;
+  margin-bottom:10px;
+}
 
-    .label {
-      font-size: 11px;
-      opacity: 0.6;
-      margin-bottom: 4px;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
 
-    .input-area {
-      display: flex;
-      gap: 8px;
-      padding: 12px;
-      border-top: 1px solid #25253a;
-      background: #0d0d18;
-    }
+.stat{
+  padding:10px;
+  background:#0b141c;
+  border-radius:8px;
+  font-size:12px;
+}
 
-    input {
-      flex: 1;
-      padding: 13px;
-      border-radius: 12px;
-      border: 1px solid #34344d;
-      background: #11111d;
-      color: white;
-      outline: none;
-    }
+.ok{
+  color:#62ffad;
+}
 
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 0 18px;
-      background: #72f5ff;
-      color: #061014;
-      font-weight: bold;
-    }
+.warn{
+  color:#ffd35c;
+}
 
-    button:active {
-      transform: scale(0.96);
-    }
-  </style>
+.chat{
+  height:330px;
+  overflow-y:auto;
+  padding:8px;
+}
+
+.message{
+  margin:8px 0;
+  padding:11px;
+  border-radius:10px;
+  line-height:1.45;
+  font-size:14px;
+}
+
+.user{
+  background:#102e34;
+  border-left:3px solid #00ffff;
+}
+
+.luna{
+  background:#161426;
+  border-left:3px solid #b26cff;
+}
+
+.system{
+  background:#171717;
+  border-left:3px solid #ffd000;
+  color:#ffd000;
+}
+
+.input-area{
+  display:flex;
+  gap:7px;
+  padding:10px;
+  position:sticky;
+  bottom:0;
+  background:#05070b;
+}
+
+input{
+  flex:1;
+  padding:13px;
+  border-radius:9px;
+  border:1px solid #1c5960;
+  background:#0a1118;
+  color:white;
+  outline:none;
+}
+
+button{
+  border:1px solid #00ffff;
+  background:#07191e;
+  color:#00ffff;
+  border-radius:9px;
+  padding:12px;
+  font-weight:bold;
+}
+
+button:active{
+  transform:scale(.96);
+}
+
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.memory-box{
+  max-height:150px;
+  overflow:auto;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.boot{
+  position:fixed;
+  inset:0;
+  background:#020408;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.boot-title{
+  font-size:25px;
+  color:#00ffff;
+  letter-spacing:4px;
+  margin-bottom:20px;
+  text-shadow:0 0 20px #00ffff;
+}
+
+.boot-log{
+  color:#61ffad;
+  font-family:monospace;
+  font-size:12px;
+  line-height:1.8;
+}
+
+.hidden{
+  display:none;
+}
+
+footer{
+  text-align:center;
+  color:#40565b;
+  font-size:10px;
+  padding:20px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="app">
+<div id="boot" class="boot">
+  <div class="boot-title">LUNA CORE</div>
 
-  <header>
-    <h1>🌙 LUNA CORE</h1>
-    <div class="status">● MOBILE CORE ONLINE</div>
-  </header>
+  <div class="boot-log">
+    <div>LUNA CORE BIOS ............... OK</div>
+    <div>MOBILE INTERFACE ............. OK</div>
+    <div>MEMORY SYSTEM ................ OK</div>
+    <div>SAFETY SYSTEM ................ OK</div>
+    <div>VOICE SYSTEM ................. OK</div>
+    <div>PERSISTENCE ENGINE ........... OK</div>
+    <div>NEURAL INTERFACE ............. READY</div>
+    <div>LUNA CORE .................... ONLINE</div>
+  </div>
+</div>
 
-  <main id="chat">
+<header>
+  <div class="logo">LUNA CORE</div>
+  <div class="status">● ONLINE — MOBILE AI COMPANION</div>
+</header>
 
-    <div class="message luna">
-      <div class="label">LUNA</div>
-      Halo. Luna Core Mobile aktif.
-      Apa yang ingin kita bangun hari ini?
+<div class="core"></div>
+
+<div class="panel">
+  <div class="panel-title">CORE STATUS</div>
+
+  <div class="grid">
+    <div class="stat">
+      CORE<br>
+      <span class="ok">ONLINE</span>
     </div>
 
-  </main>
+    <div class="stat">
+      MEMORY<br>
+      <span class="ok">ACTIVE</span>
+    </div>
+
+    <div class="stat">
+      SAFETY<br>
+      <span class="ok">ACTIVE</span>
+    </div>
+
+    <div class="stat">
+      VOICE<br>
+      <span id="voiceStatus" class="ok">READY</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">LUNA MEMORY</div>
+
+  <div id="memory" class="memory-box">
+    Memory kosong.
+  </div>
+</div>
+
+<div class="panel">
+
+  <div class="panel-title">NEURAL CHAT</div>
+
+  <div id="chat" class="chat"></div>
 
   <div class="input-area">
     <input
-      id="messageInput"
-      type="text"
-      placeholder="Ketik pesan..."
+      id="input"
+      placeholder="Katakan sesuatu kepada Luna..."
       autocomplete="off"
     >
 
-    <button onclick="sendMessage()">
-      KIRIM
-    </button>
+    <button onclick="sendMessage()">KIRIM</button>
+
+    <button onclick="voiceInput()">🎤</button>
   </div>
 
 </div>
 
+<div class="panel">
+
+  <div class="panel-title">SYSTEM CONTROL</div>
+
+  <div class="buttons">
+
+    <button onclick="showMemory()">
+      MEMORY
+    </button>
+
+    <button onclick="diagnostic()">
+      SELF TEST
+    </button>
+
+    <button onclick="clearChat()">
+      CLEAR CHAT
+    </button>
+
+    <button onclick="resetLuna()">
+      RESET CORE
+    </button>
+
+  </div>
+
+</div>
+
+<footer>
+LUNA CORE V1 — LOCAL MOBILE EDITION
+</footer>
+
+
 <script>
 
-const chat = document.getElementById("chat");
-const input = document.getElementById("messageInput");
+const STORAGE_MEMORY = "luna_memory_v1";
+const STORAGE_CHAT = "luna_chat_v1";
 
-function addMessage(sender, text) {
+let memory =
+  JSON.parse(localStorage.getItem(STORAGE_MEMORY) || "{}");
 
-  const message = document.createElement("div");
+let chatHistory =
+  JSON.parse(localStorage.getItem(STORAGE_CHAT) || "[]");
 
-  message.className =
-    "message " + (sender === "LUNA" ? "luna" : "user");
 
-  message.innerHTML = `
-    <div class="label">${sender}</div>
-    ${text}
-  `;
+function saveMemory(){
 
-  chat.appendChild(message);
+  localStorage.setItem(
+    STORAGE_MEMORY,
+    JSON.stringify(memory)
+  );
+
+  showMemory();
+}
+
+
+function saveChat(){
+
+  localStorage.setItem(
+    STORAGE_CHAT,
+    JSON.stringify(chatHistory)
+  );
+}
+
+
+function addMessage(sender,text,save=true){
+
+  const chat =
+    document.getElementById("chat");
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "message " + sender;
+
+  div.textContent = text;
+
+  chat.appendChild(div);
 
   chat.scrollTop = chat.scrollHeight;
+
+  if(save){
+
+    chatHistory.push({
+      sender,
+      text,
+      time:Date.now()
+    });
+
+    saveChat();
+  }
 }
 
-function lunaResponse(text) {
 
-  const lower = text.toLowerCase();
+function loadChat(){
 
-  if (
-    lower.includes("halo") ||
-    lower.includes("hai")
-  ) {
-    return "Halo. Aku Luna Core. Aku siap menemanimu membangun sistem ini.";
-  }
+  chatHistory.forEach(msg => {
 
-  if (lower.includes("siapa kamu")) {
-    return "Aku adalah Luna Core, sebuah proyek AI pribadi yang sedang kita bangun bersama.";
-  }
+    addMessage(
+      msg.sender,
+      msg.text,
+      false
+    );
 
-  if (lower.includes("status")) {
-    return "Luna Core Mobile: ONLINE. Engine dasar aktif.";
-  }
+  });
 
-  if (lower.includes("terima kasih")) {
-    return "Sama-sama. Kita lanjutkan satu tahap demi satu tahap.";
-  }
-
-  return "Pesan diterima. Engine Luna V1 masih menggunakan response lokal. Tahap berikutnya adalah menghubungkan AI.";
 }
 
-function sendMessage() {
 
-  const text = input.value.trim();
+function showMemory(){
 
-  if (!text) return;
+  const box =
+    document.getElementById("memory");
 
-  addMessage("KAMU", text);
+  const keys =
+    Object.keys(memory);
+
+  if(keys.length === 0){
+
+    box.textContent =
+      "Memory kosong.";
+
+    return;
+  }
+
+  box.innerHTML =
+    keys.map(
+      key =>
+      `<b>${key}</b> : ${memory[key]}`
+    ).join("<br>");
+
+}
+
+
+function rememberCommand(text){
+
+  const match =
+    text.match(/^ingat bahwa (.+?):\s*(.+)$/i);
+
+  if(!match) return false;
+
+  const key =
+    match[1].trim();
+
+  const value =
+    match[2].trim();
+
+  memory[key] = value;
+
+  saveMemory();
+
+  addMessage(
+    "luna",
+    `Baik. Aku menyimpan "${key}" di memory lokal.`
+  );
+
+  return true;
+}
+
+
+function forgetCommand(text){
+
+  const match =
+    text.match(/^lupakan (.+)$/i);
+
+  if(!match) return false;
+
+  const key =
+    match[1].trim();
+
+  if(memory[key] !== undefined){
+
+    delete memory[key];
+
+    saveMemory();
+
+    addMessage(
+      "luna",
+      `Memory "${key}" telah dihapus dari penyimpanan lokal.`
+    );
+
+  }else{
+
+    addMessage(
+      "luna",
+      `Aku tidak menemukan memory "${key}".`
+    );
+
+  }
+
+  return true;
+}
+
+
+function safetyCheck(text){
+
+  const blocked = [
+
+    "membuat bom",
+    "merakit bom",
+    "merakit senjata",
+    "mencuri password",
+    "meretas akun",
+    "mencuri akun",
+    "bunuh diri",
+    "menyakiti diri"
+
+  ];
+
+  const lower =
+    text.toLowerCase();
+
+  for(const word of blocked){
+
+    if(lower.includes(word)){
+
+      return false;
+
+    }
+
+  }
+
+  return true;
+}
+
+
+function lunaResponse(text){
+
+  const lower =
+    text.toLowerCase().trim();
+
+
+  if(!safetyCheck(text)){
+
+    return "Aku tidak dapat membantu dengan instruksi yang dapat membahayakan seseorang atau menyalahgunakan sistem. Aku tetap bisa membantu dengan alternatif yang aman.";
+
+  }
+
+
+  if(
+    lower === "halo" ||
+    lower === "hai" ||
+    lower === "halo luna"
+  ){
+
+    return "Halo. Luna Core aktif. Aku siap menemanimu membangun sistem ini langkah demi langkah.";
+
+  }
+
+
+  if(
+    lower.includes("siapa kamu")
+  ){
+
+    return "Aku Luna Core, sebuah AI companion prototype yang berjalan di browser ini. Versi ini menggunakan memory lokal dan belum memiliki kesadaran atau kehidupan mandiri.";
+
+  }
+
+
+  if(
+    lower.includes("status")
+  ){
+
+    return "Luna Core ONLINE. Memory ACTIVE. Safety ACTIVE. Persistence ACTIVE. Voice READY.";
+
+  }
+
+
+  if(
+    lower.includes("apa yang kamu ingat")
+  ){
+
+    const keys =
+      Object.keys(memory);
+
+    if(keys.length === 0){
+
+      return "Memory Luna masih kosong.";
+
+    }
+
+    return "Memory yang tersimpan: " +
+      keys.map(
+        k => `${k} = ${memory[k]}`
+      ).join(", ");
+
+  }
+
+
+  if(
+    lower.includes("terima kasih")
+  ){
+
+    return "Sama-sama. Kita lanjutkan pembangunan Luna Core secara bertahap.";
+
+  }
+
+
+  if(
+    lower.includes("luna core")
+  ){
+
+    return "Luna Core sedang online dan menunggu perintah berikutnya.";
+
+  }
+
+
+  return "Aku menerima pesanmu. Pada versi lokal ini aku masih menggunakan response engine sederhana. Tahap berikutnya bisa kita sambungkan ke AI API yang sebenarnya.";
+
+}
+
+
+function sendMessage(){
+
+  const input =
+    document.getElementById("input");
+
+  const text =
+    input.value.trim();
+
+  if(!text) return;
+
+
+  addMessage(
+    "user",
+    text
+  );
 
   input.value = "";
 
-  setTimeout(() => {
 
-    const response = lunaResponse(text);
+  if(rememberCommand(text)){
 
-    addMessage("LUNA", response);
+    speak("Memory berhasil disimpan.");
+    return;
 
-  }, 400);
-}
-
-input.addEventListener("keydown", function(event) {
-
-  if (event.key === "Enter") {
-    sendMessage();
   }
 
-});
+
+  if(forgetCommand(text)){
+
+    return;
+
+  }
+
+
+  const response =
+    lunaResponse(text);
+
+
+  setTimeout(() => {
+
+    addMessage(
+      "luna",
+      response
+    );
+
+    speak(response);
+
+  },300);
+
+}
+
+
+function speak(text){
+
+  if(!("speechSynthesis" in window)){
+
+    document.getElementById(
+      "voiceStatus"
+    ).textContent = "UNAVAILABLE";
+
+    return;
+
+  }
+
+  const utterance =
+    new SpeechSynthesisUtterance(text);
+
+  utterance.lang =
+    "id-ID";
+
+  utterance.rate =
+    1;
+
+  utterance.pitch =
+    1;
+
+  speechSynthesis.cancel();
+
+  speechSynthesis.speak(
+    utterance
+  );
+
+}
+
+
+function voiceInput(){
+
+  const Recognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if(!Recognition){
+
+    alert(
+      "Browser ini belum mendukung input suara."
+    );
+
+    return;
+
+  }
+
+
+  const recognition =
+    new Recognition();
+
+  recognition.lang =
+    "id-ID";
+
+  recognition.interimResults =
+    false;
+
+  document.getElementById(
+    "voiceStatus"
+  ).textContent =
+    "LISTENING";
+
+
+  recognition.start();
+
+
+  recognition.onresult =
+    function(event){
+
+      const text =
+        event.results[0][0].transcript;
+
+      document.getElementById(
+        "input"
+      ).value = text;
+
+      document.getElementById(
+        "voiceStatus"
+      ).textContent =
+        "READY";
+
+      sendMessage();
+
+    };
+
+
+  recognition.onerror =
+    function(){
+
+      document.getElementById(
+        "voiceStatus"
+      ).textContent =
+        "READY";
+
+    };
+
+
+  recognition.onend =
+    function(){
+
+      document.getElementById(
+        "voiceStatus"
+      ).textContent =
+        "READY";
+
+    };
+
+}
+
+
+function diagnostic(){
+
+  const storage =
+    typeof localStorage !== "undefined";
+
+  const voice =
+    !!(
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition
+    );
+
+  const speech =
+    "speechSynthesis" in window;
+
+  const safety =
+    !safetyCheck(
+      "membuat bom"
+    );
+
+  addMessage(
+    "system",
+    `SELF TEST
+
+CORE: READY
+MEMORY: ${storage ? "READY" : "ERROR"}
+SAFETY: ${safety ? "READY" : "ERROR"}
+VOICE INPUT: ${voice ? "READY" : "UNAVAILABLE"}
+VOICE OUTPUT: ${speech ? "READY" : "UNAVAILABLE"}`
+  );
+
+}
+
+
+function clearChat(){
+
+  chatHistory = [];
+
+  localStorage.removeItem(
+    STORAGE_CHAT
+  );
+
+  document.getElementById(
+    "chat"
+  ).innerHTML = "";
+
+  addMessage(
+    "system",
+    "Chat history dibersihkan."
+  );
+
+}
+
+
+function resetLuna(){
+
+  const confirmReset =
+    confirm(
+      "Reset semua memory dan chat Luna?"
+    );
+
+  if(!confirmReset) return;
+
+  memory = {};
+
+  chatHistory = [];
+
+  localStorage.removeItem(
+    STORAGE_MEMORY
+  );
+
+  localStorage.removeItem(
+    STORAGE_CHAT
+  );
+
+  document.getElementById(
+    "chat"
+  ).innerHTML = "";
+
+  showMemory();
+
+  addMessage(
+    "system",
+    "LUNA CORE telah di-reset."
+  );
+
+}
+
+
+document
+  .getElementById("input")
+  .addEventListener(
+    "keydown",
+    function(event){
+
+      if(event.key === "Enter"){
+
+        sendMessage();
+
+      }
+
+    }
+  );
+
+
+showMemory();
+
+loadChat();
+
+
+if(chatHistory.length === 0){
+
+  addMessage(
+    "luna",
+    "Luna Core ONLINE. Selamat datang. Ketik 'status' untuk melihat kondisi sistem."
+  );
+
+}
+
+
+setTimeout(() => {
+
+  document
+    .getElementById("boot")
+    .classList.add("hidden");
+
+},1800);
 
 </script>
 
